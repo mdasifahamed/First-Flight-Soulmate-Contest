@@ -30,4 +30,7 @@ interface ISoulmate {
     function totalSupply() external view returns (uint256);
 
     function totalSouls() external view returns (uint256);
+    // Need At the report
+    function checkDivorced(address _caller) external view returns(bool);
+
 }

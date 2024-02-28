@@ -72,7 +72,11 @@ contract Soulmate is ERC721 {
             ownerToId[msg.sender] = nextID;
             emit SoulmateIsWaiting(msg.sender);
         } else if (soulmate2 == address(0)) {
+
             idToOwners[nextID][1] = msg.sender;
+            // if(idToOwners[nextID][0] == idToOwners[nextID][1]){
+            //     revert("Same user");
+            // }
             // Once 2 soulmates are reunited, the token is minted
             ownerToId[msg.sender] = nextID;
             soulmateOf[msg.sender] = soulmate1;
@@ -126,6 +130,7 @@ contract Soulmate is ERC721 {
         divorced[msg.sender] = true;
         divorced[soulmateOf[msg.sender]] = true;
         emit CoupleHasDivorced(msg.sender, soulmate2);
+
     }
 
     function isDivorced() public view returns (bool) {
@@ -138,5 +143,9 @@ contract Soulmate is ERC721 {
 
     function totalSouls() external view returns (uint256) {
         return nextID * 2;
+    }
+
+    function checkDivorced(address _caller) public view returns(bool){
+        return divorced[_caller];
     }
 }

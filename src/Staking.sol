@@ -51,6 +51,8 @@ contract Staking {
         if (loveToken.balanceOf(address(stakingVault)) == 0)
             revert Staking__NoMoreRewards();
         // No require needed because of overflow protection
+
+        // lastClaim[msg.sender] = block.timestamp; solution to claimrewad before weeks and overfunding of rewads
         userStakes[msg.sender] += amount;
         loveToken.transferFrom(msg.sender, address(this), amount);
 
@@ -62,6 +64,8 @@ contract Staking {
         // No require needed because of overflow protection
         userStakes[msg.sender] -= amount;
         loveToken.transfer(msg.sender, amount);
+        // Updated code
+
         emit Withdrew(msg.sender, amount);
     }
 
@@ -89,6 +93,7 @@ contract Staking {
         // Send the same amount of LoveToken as the week waited times the number of token staked
         uint256 amountToClaim = userStakes[msg.sender] *
             timeInWeeksSinceLastClaim;
+ 
         loveToken.transferFrom(
             address(stakingVault),
             msg.sender,

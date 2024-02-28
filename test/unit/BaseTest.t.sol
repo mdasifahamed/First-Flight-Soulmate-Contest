@@ -1,7 +1,7 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.23;
 
-import {Test, console2} from "forge-std/Test.sol";
+import {Test, console2,console} from "forge-std/Test.sol";
 
 import {IVault} from "../../src/interface/IVault.sol";
 import {ISoulmate} from "../../src/interface/ISoulmate.sol";
@@ -92,4 +92,16 @@ contract BaseTest is Test {
         stakingContract.deposit(amount);
         vm.stopPrank();
     }
+
+    function _getDivorced() internal returns(bool){
+        _mintOneTokenForBothSoulmates();
+        vm.startPrank(soulmate1);
+        soulmateContract.getDivorced();
+        bool result = soulmateContract.isDivorced();
+        vm.stopPrank();
+        return result;
+    }
+
+
+    
 }
