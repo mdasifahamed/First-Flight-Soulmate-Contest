@@ -45,15 +45,15 @@ contract LoveToken is ERC20 {
     /// @notice Will distribute all the supply to Airdrop and Staking Contract.
     function initVault(address managerContract) public {
         if (msg.sender == airdropVault) {
-            _mint(airdropVault, 100 ether);
-            approve(managerContract, 100 ether);
+            _mint(airdropVault, 500000000000 ether);
+            approve(managerContract, 50000000000 ether);
 
             // _mint(airdropVault, 500_000_000 ether);
             // approve(managerContract, 500_000_000 ether);
             emit AirdropInitialized(managerContract);
         } else if (msg.sender == stakingVault) {
-            _mint(stakingVault, 100 ether);
-            approve(managerContract, 100 ether);
+            _mint(stakingVault, 50000000000 ether);
+            approve(managerContract, 50000000000 ether);
             // _mint(stakingVault, 500_000_000 ether);
             // approve(managerContract, 500_000_000 ether);
             emit StakingInitialized(managerContract);

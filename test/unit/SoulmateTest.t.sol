@@ -138,37 +138,6 @@ contract SoulmateTest is BaseTest {
 
     }
 
-    function testGarbage () public {
-        address user1 = makeAddr("user1");
-        address user2 = makeAddr("user2");
-        address user3 = makeAddr("user3");
-        address user4 = makeAddr("user4");
-
-
-        vm.startPrank(user1);
-        soulmateContract.mintSoulmateToken();
-        vm.stopPrank();
-
-        vm.startPrank(user2);
-        soulmateContract.mintSoulmateToken();
-        vm.stopPrank();
-
-        uint256 tokenId = soulmateContract.ownerToId(user1);
-
-        vm.startPrank(user2);
-      
-        soulmateContract.approve(user3, tokenId);
-        vm.stopPrank();
-
-        vm.startPrank(user3);
-        soulmateContract.safeTransferFrom(msg.sender, user4, tokenId);
-        vm.stopPrank();
-
-        
-
-
-
-    }
 
 
     

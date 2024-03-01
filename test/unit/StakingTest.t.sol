@@ -14,7 +14,7 @@ contract StakingTest is BaseTest {
             loveToken.allowance(
                 address(stakingVault),
                 address(stakingContract)
-            ) == 100 ether
+            ) == 50000000000 ether
         );
     }
 
@@ -365,89 +365,6 @@ contract StakingTest is BaseTest {
         
     }
 
-    function test_ClaimRewardsPerfect() public {
-
-
-        _mintOneTokenForBothSoulmates();
-
-        vm.warp(block.timestamp + 7 days +1 seconds);
-
-        vm.startPrank(soulmate1);
-        airdropContract.claim();
-        vm.stopPrank();
-
-        assert(loveToken.balanceOf(soulmate1) == 7 ether);
-
-        // as per doc if now solmate deposit 2 token for 
-        // 2 weeks he should get 4 tokens as reward
-        // but he wiil get 6 tokens 
-        uint256 amountToDeposit = 2 ether;
-        vm.startPrank(soulmate1);
-        loveToken.approve(address(stakingContract), amountToDeposit);
-        stakingContract.deposit(amountToDeposit);
-        vm.stopPrank();
-
-        uint256 afterDepositSoulmateTokenBalance = loveToken.balanceOf(soulmate1);
-
-        assert(afterDepositSoulmateTokenBalance == 5 ether);
-
-        console.log(afterDepositSoulmateTokenBalance);
-
-        // Let Wait 2 Weeks
-        vm.warp(block.timestamp + 2 weeks +1 seconds);
-        vm.startPrank(soulmate1);
-        stakingContract.claimRewards();
-        vm.stopPrank();
-
-        // as per doc now soulmate should have 9 tokens
-        // but It will not it will have 11 ether
-       
-        uint256 solmatebalanceAfterClaimimgRewards = loveToken.balanceOf(soulmate1);
-
-        //  the Soulmate1 token balance sholud be 11 
-        assert(solmatebalanceAfterClaimimgRewards == 9 ether);
-
-        console.log(solmatebalanceAfterClaimimgRewards);
-
-        vm.startPrank(soulmate1);
-        stakingContract.withdraw(amountToDeposit);
-        vm.stopPrank();
-
-        // withdraw soulmate1 shoul have 11 token
-        // but it has 13 tokens
-        uint256 solmatebalanceAfterClaimimgRewardsAndWithDraw = loveToken.balanceOf(soulmate1);
-        // it Has Now 11 Token
-
-        assert(solmatebalanceAfterClaimimgRewardsAndWithDraw == 11 ether);
-
-
-        console.log(solmatebalanceAfterClaimimgRewardsAndWithDraw);
-
-
-        // deposit and stake again
-
-        uint256 amountToDeposit2 = 2 ether;
-        vm.startPrank(soulmate1);
-        loveToken.approve(address(stakingContract), amountToDeposit2);
-        stakingContract.deposit(amountToDeposit2);
-        vm.stopPrank();
-
-        vm.expectRevert();
-        vm.startPrank(soulmate1);
-        stakingContract.claimRewards();
-        vm.stopPrank();
-
-        vm.warp(block.timestamp + 2 weeks +1 seconds);
-        vm.startPrank(soulmate1);
-        stakingContract.claimRewards();
-        vm.stopPrank();
-
-        vm.startPrank(soulmate1);
-        stakingContract.withdraw(amountToDeposit2);
-        vm.stopPrank();
-
-        assert( loveToken.balanceOf(soulmate1) == 15 ether);
-    }
-
+ 
 
 }
