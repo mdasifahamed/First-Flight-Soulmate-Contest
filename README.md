@@ -96,8 +96,10 @@ The vault contract is responsible for holding the love tokens, and approving the
 
 ## Testing
 
+Test The Findings Using Below Command
+
 ```
-forge test
+forge test --match-test <fucntion names from the findings>
 ```
 
 ### Test Coverage
@@ -118,9 +120,7 @@ forge coverage --report debug
 - In Scope:
   (For this contest, just use the main branch)
 
-```
-Hash:
-```
+
 
 ## Compatibilities
 
