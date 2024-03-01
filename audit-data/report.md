@@ -1,6 +1,6 @@
 
 
-### [H-2] Users Can Claim `LoveTokens` from `Airdrop` Even After Divorce, Violating the Protocol Rule that Only Couples Can Claim LoveTokens.
+### [H-1] Users Can Claim `LoveTokens` from `Airdrop` Even After Divorce, Violating the Protocol Rule that Only Couples Can Claim LoveTokens.
 **Description:** In the `Airdrop::claim()` function, divorced couples can still claim LoveTokens, contrary to the intended design. The issue arises from the following section of the `Airdrop::claim()` function:
 
 ```javascript
@@ -507,10 +507,11 @@ POC For Same User Minting
 `StakingVault` contract and reward are transfered from the `StakingVault` contract. The issue start from that the `StakingVault` contract hold a specific amount of `LoveToken`. We Can see that from the `LoveToken::iniiVault()`. 
 
 ```javascript
+    // Consoder Folloing Changes to the Below For Proving The Concept OtherWise Test Will faill
     function initVault(address managerContract) public {
         if (msg.sender == airdropVault) {
-            _mint(airdropVault, 500_000_000 ether);
-            approve(managerContract, 500_000_000 ether);
+            _mint(airdropVault, 100 ether);
+            approve(managerContract, 100 ether);
             emit AirdropInitialized(managerContract);
         } else if (msg.sender == stakingVault) {
          
@@ -519,6 +520,26 @@ POC For Same User Minting
             emit StakingInitialized(managerContract);
         } else revert LoveToken__Unauthorized();
     }
+
+    // And In both ./test/unit/AirDropTest.t.sol; and in ./test/unit/StakingTest.t.sol otherWise This Will fail.
+
+    function test_WellInitialized() public {
+        assertTrue(
+            loveToken.allowance(
+                address(stakingVault),
+                address(stakingContract)
+            ) == 100 ether
+        );
+
+     function test_WellInitialized() public {
+        assertTrue(
+            loveToken.allowance(
+                address(airdropVault),
+                address(airdropVault)
+            ) == 100 ether
+        );
+    
+    
 ```
 It is clear that `Staking` contracts mints `5000000000` tokens. Which is limited amount and it can ended one day. After it become zero it will be unable to send reward token to the user which will be potential time loss for the users. 
 
